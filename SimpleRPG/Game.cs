@@ -12,18 +12,19 @@ namespace SimpleRPG
         int playerMaxHealth = 100;
         int playerHealth = 100;
         int playerDamge = 100;
+        //heal amount
         int healUp = 80;
         public void Start()
         {
             Welcome();
-            int montsterRemaining = 2;
+            int montsterRemaining = 5;
             bool alive = true;
             //fight til lose
             while (alive && montsterRemaining > 0)
             {
                 Console.WriteLine("There are " + montsterRemaining + " monsters remaining");
 
-                alive = Appear(70, 100);
+                alive = Appear(80, 100);
                 montsterRemaining--;
             }
 
@@ -69,11 +70,23 @@ namespace SimpleRPG
                 {
                     //escpae
                     survived = Flee();
-                    return true;
+                    if (survived)
+                    {
+                        return true;
+                    }
+                    
                 }
-                else if (action == "heal" || action == "Heal")
+                else
                 {
-                    survived = Heal();
+                    //player heal
+                    Console.WriteLine(playerName + " has healed " + healUp + "HP.");
+                    playerHealth += healUp;
+                    if (playerHealth > playerMaxHealth)
+                    {
+                        playerHealth = playerMaxHealth;
+                    }
+                    Console.WriteLine("You have " + playerHealth + "HP remaining.");
+                    
                 }
 
             }
@@ -89,7 +102,7 @@ namespace SimpleRPG
             if (playerHealth <= 0)
             {
                 //dead player
-                Console.WriteLine("You are dead.");
+                Console.WriteLine("You died because you were a meanie! XP");
                 return false;
             }
 
@@ -118,12 +131,10 @@ namespace SimpleRPG
             Console.WriteLine("You and the monster are safe to go home to your families.");
             return true;
         }
-
+        //able to heal a certain amount
         bool Heal()
         {
-            Console.WriteLine(playerName + " have healed.");
-            playerHealth = playerHealth + healUp;
-            Console.WriteLine(playerName + " have " + playerHealth + "HP now.");
+            
             return true;
         }
     }
