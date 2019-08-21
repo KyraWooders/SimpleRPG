@@ -12,6 +12,7 @@ namespace SimpleRPG
         int playerMaxHealth = 100;
         int playerHealth = 100;
         int playerDamge = 100;
+        int healUp = 80;
         public void Start()
         {
             Welcome();
@@ -22,7 +23,7 @@ namespace SimpleRPG
             {
                 Console.WriteLine("There are " + montsterRemaining + " monsters remaining");
 
-                alive = Appear(90, 100);
+                alive = Appear(70, 100);
                 montsterRemaining--;
             }
 
@@ -51,7 +52,7 @@ namespace SimpleRPG
             bool survived = true;
             while (playerHealth > 0 && monsterHealth > 0)
             {
-                Console.Write("What will you do? (fight/flee) ");
+                Console.Write("What will you do? (fight/flee/heal) ");
                 Console.WriteLine("");
                 action = Console.ReadLine();
 
@@ -67,9 +68,12 @@ namespace SimpleRPG
                 else if (action == "flee" || action == "Flee")
                 {
                     //escpae
-                    Console.WriteLine(playerName + " got away safely.");
-                    Console.WriteLine("You and the monster are safe to go home to your families.");
+                    survived = Flee();
                     return true;
+                }
+                else if (action == "heal" || action == "Heal")
+                {
+                    survived = Heal();
                 }
 
             }
@@ -81,7 +85,7 @@ namespace SimpleRPG
             //monster attack
             Console.WriteLine("The monster attacks! " + playerName + " takes " + monsterDamge + " damage!");
             playerHealth = playerHealth - monsterDamge;
-            Console.WriteLine(playerName + " has " + playerHealth + " health remaining.");
+            Console.WriteLine(playerName + " has " + playerHealth + "HP remaining.");
             if (playerHealth <= 0)
             {
                 //dead player
@@ -92,7 +96,7 @@ namespace SimpleRPG
             //player attack
             Console.WriteLine(playerName + " attacks! The monster takes " + playerDamge + " damage.");
             monsterHealth -= playerDamge;
-            Console.WriteLine("The monster has " + monsterHealth + " remaining.");
+            Console.WriteLine("The monster has " + monsterHealth + "HP remaining.");
             if (monsterHealth <= 0)
             {
                 //monster dead
@@ -118,6 +122,8 @@ namespace SimpleRPG
         bool Heal()
         {
             Console.WriteLine(playerName + " have healed.");
+            playerHealth = playerHealth + healUp;
+            Console.WriteLine(playerName + " have " + playerHealth + "HP now.");
             return true;
         }
     }
